@@ -16,12 +16,12 @@ status() {
   String? statusText;
 
   if (!_isJoined) {
-    statusText = 'Connecting to dentist';
+    statusText = 'Connecting';
     checkStatus = false;
     // connectionState(checkStatus);
     return checkStatus;
   } else if (_remoteUid == null) {
-    statusText = 'Waiting for dentist to join...';
+    statusText = 'Waiting for user to join...';
     // connectionState(checkStatus);
     return checkStatus;
   } else if (_isJoined) {
@@ -81,7 +81,7 @@ Future<List<DentistName>> fetchAvailableDentist() async {
         .toList();
     return result;
   } else {
-    throw Exception('Failed to load available dentists');
+    throw Exception('Failed to load callers');
   }
 }
 
@@ -220,14 +220,7 @@ class _CallConnectingState extends State<CallConnecting> {
                       icon: speakerIcon),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(top: 15.0),
-                child: Text(
-                  'DentalDost',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-              ),
+             
               Padding(
                 padding: const EdgeInsets.only(
                     left: 15.0, right: 25.0, top: 15.0, bottom: 15.0),
