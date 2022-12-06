@@ -21,7 +21,7 @@ class Name {
   }
 }
 
-Future<List<Name>> fetchAvailableDentist() async {
+Future<List<Name>> fetchAvailableCallers() async {
   final response = await http.post(Uri.parse('https://postman-echo.com/post'),
       body: jsonEncode([
         {"name": "dog", "thumbnail": "https://picsum.photos/id/237/200/300"},
@@ -80,7 +80,7 @@ class TeleScreenState extends State<TeleScreen> {
           ),
         ),
         body: FutureBuilder<List<Name>>(
-            future: futureAvailableDentist,
+            future: futureAvailableCallers,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return Scaffold(
