@@ -48,24 +48,24 @@ Icon speakerIcon = const Icon(
   color: Colors.black,
 );
 
-class DentistName {
+class Name {
   String? name;
   String? thumbnail;
 
-  DentistName({
+  Name({
     this.name,
     this.thumbnail,
   });
 
-  factory DentistName.fromJson(Map<String, dynamic> json) {
-    return DentistName(
+  factory Name.fromJson(Map<String, dynamic> json) {
+    return Name(
       name: json['name'],
       thumbnail: json['thumbnail'],
     );
   }
 }
 
-Future<List<DentistName>> fetchAvailableDentist() async {
+Future<List<Name>> fetchAvailableCallers() async {
   final response = await http.post(Uri.parse('https://postman-echo.com/post'),
       body: jsonEncode([
         {"name": "dog", "thumbnail": "https://picsum.photos/id/237/200/300"},
@@ -77,7 +77,7 @@ Future<List<DentistName>> fetchAvailableDentist() async {
 
   if (response.statusCode == 200) {
     var result = jsonDecode(jsonDecode(response.body)['data'])
-        .map<DentistName>((e) => DentistName.fromJson(e))
+        .map<Name>((e) => Name.fromJson(e))
         .toList();
     return result;
   } else {
@@ -93,13 +93,13 @@ class CallConnecting extends StatefulWidget {
 }
 
 class _CallConnectingState extends State<CallConnecting> {
-  late Future<List<DentistName>> futureAvailableDentist;
+  late Future<List<Name>> futureAvailableCallers;
 
   @override
   void initState() {
     super.initState();
     status();
-    futureAvailableDentist = fetchAvailableDentist();
+    futureAvailableCallers = fetchAvailableCallers();
   }
 
   @override
@@ -112,7 +112,7 @@ class _CallConnectingState extends State<CallConnecting> {
     if (checkStatus == false) {
       return Scaffold(
         body: FutureBuilder<List<DentistName>>(
-            future: futureAvailableDentist,
+            future: futureAvailableCallers,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return Flex(
