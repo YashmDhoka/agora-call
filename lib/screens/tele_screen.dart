@@ -4,24 +4,24 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class DentistName {
+class Name {
   String? name;
   String? thumbnail;
 
-  DentistName({
+ Name({
     this.name,
     this.thumbnail,
   });
 
-  factory DentistName.fromJson(Map<String, dynamic> json) {
-    return DentistName(
+  factory Name.fromJson(Map<String, dynamic> json) {
+    return Name(
       name: json['name'],
       thumbnail: json['thumbnail'],
     );
   }
 }
 
-Future<List<DentistName>> fetchAvailableDentist() async {
+Future<List<Name>> fetchAvailableDentist() async {
   final response = await http.post(Uri.parse('https://postman-echo.com/post'),
       body: jsonEncode([
         {"name": "dog", "thumbnail": "https://picsum.photos/id/237/200/300"},
@@ -33,7 +33,7 @@ Future<List<DentistName>> fetchAvailableDentist() async {
 
   if (response.statusCode == 200) {
     var result = jsonDecode(jsonDecode(response.body)['data'])
-        .map<DentistName>((e) => DentistName.fromJson(e))
+        .map<Name>((e) => Name.fromJson(e))
         .toList();
     return result;
   } else {
@@ -49,12 +49,12 @@ class TeleScreen extends StatefulWidget {
 }
 
 class TeleScreenState extends State<TeleScreen> {
-  late Future<List<DentistName>> futureAvailableDentist;
+  late Future<List<Name>> futureAvailableCallers;
 
   @override
   void initState() {
     super.initState();
-    futureAvailableDentist = fetchAvailableDentist();
+    futureAvailableCallers = fetchAvailableCallers();
   }
 
   @override
@@ -79,7 +79,7 @@ class TeleScreenState extends State<TeleScreen> {
             ),
           ),
         ),
-        body: FutureBuilder<List<DentistName>>(
+        body: FutureBuilder<List<Name>>(
             future: futureAvailableDentist,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
@@ -99,18 +99,7 @@ class TeleScreenState extends State<TeleScreen> {
                             ),
                           ),
                         ),
-                        Align(
-                          child: Container(
-                            height: 150,
-                            decoration: const BoxDecoration(
-                              color: Color(0xff002446),
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(25),
-                                bottomRight: Radius.circular(25),
-                              ),
-                            ),
-                          ),
-                        ),
+                       
                         const Padding(
                           padding: EdgeInsets.only(left: 16.0),
                           child: Text(
@@ -122,60 +111,7 @@ class TeleScreenState extends State<TeleScreen> {
                             ),
                           ),
                         ),
-                        Align(
-                          alignment: const Alignment(0.0, 1),
-                          heightFactor: 1.6,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Container(
-                              // clipBehavior: Clip.hardEdge,
-                              height: 115,
-                              width: MediaQuery.of(context).size.width * 0.85,
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  boxShadow: kElevationToShadow[4],
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: ListTile(
-                                leading: Container(
-                                  height: 100,
-                                  width: 60,
-                                  color: Colors.transparent,
-                                  child: Column(
-                                    // crossAxisAlignment:
-                                    //     CrossAxisAlignment.center,
-                                    // mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Image.asset(
-                                        'assets/gold-coin.png',
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                title: const Padding(
-                                  padding: EdgeInsets.all(6.0),
-                                  child: Text(
-                                    'This consulation will charge 200 DD coins',
-                                    style: TextStyle(
-                                        color: Color(0xff0A0A0A),
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                subtitle: const Padding(
-                                  padding: EdgeInsets.all(6.0),
-                                  child: Text(
-                                    'You are short of 50 coins for consultation.',
-                                    style: TextStyle(
-                                        color: Color(0xff646464),
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                      
                       ]),
                       //
                       Expanded(
@@ -194,7 +130,7 @@ class TeleScreenState extends State<TeleScreen> {
                                 const Padding(
                                   padding: EdgeInsets.only(left: 16.0),
                                   child: Text(
-                                    'Dental surgeons online',
+                                    'Users online',
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
@@ -242,31 +178,8 @@ class TeleScreenState extends State<TeleScreen> {
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
-                                                Row(
-                                                  children: const [
-                                                    Text(
-                                                      'Degree',
-                                                      style: TextStyle(
-                                                          fontSize: 10),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 15,
-                                                    ),
-                                                    Icon(
-                                                      Icons.star,
-                                                      size: 15,
-                                                      color: Color(0xffFFA7F5),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 5,
-                                                    ),
-                                                    Text(
-                                                      'Rating',
-                                                      style: TextStyle(
-                                                          fontSize: 10),
-                                                    )
-                                                  ],
-                                                )
+                                           
+                                                
                                               ],
                                             ),
                                           ],
@@ -304,30 +217,11 @@ class TeleScreenState extends State<TeleScreen> {
                                                 CrossAxisAlignment.start,
                                             children: const [
                                               SizedBox(
-                                                height: 10,
+                                                height: 15,
                                               ),
-                                              Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  'Redeem 100 DD coins',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  'For teleconsultation, redeem coins and connect instanlty',
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      color: Color(0xff646464)),
-                                                ),
-                                              )
+                                              
+                                              
+                                             
                                             ],
                                           ),
                                         ),
@@ -408,7 +302,7 @@ class BottomNavigationBar extends StatelessWidget {
               ),
               onPressed: () {},
               child: const Text(
-                'Make Payment',
+                'Make Call',
                 style: TextStyle(color: Colors.white),
               ),
             ),
