@@ -25,26 +25,26 @@ Icon speakerIcon = const Icon(
   color: Colors.black,
 );
 
-class DentistName {
+class Name {
   String? name;
   String? thumbnail;
   String? callLength;
 
-  DentistName({
+  Name({
     this.name,
     this.thumbnail,
     this.callLength,
   });
 
-  factory DentistName.fromJson(Map<String, dynamic> json) {
-    return DentistName(
+  factory Name.fromJson(Map<String, dynamic> json) {
+    return Name(
         name: json['name'],
         thumbnail: json['thumbnail'],
         callLength: json['callLenth']);
   }
 }
 
-Future<List<DentistName>> fetchAvailableDentist() async {
+Future<List<Name>> fetchAvailableCallers() async {
   final response = await http.post(Uri.parse('https://postman-echo.com/post'),
       body: jsonEncode([
         {
@@ -61,11 +61,11 @@ Future<List<DentistName>> fetchAvailableDentist() async {
 
   if (response.statusCode == 200) {
     var result = jsonDecode(jsonDecode(response.body)['data'])
-        .map<DentistName>((e) => DentistName.fromJson(e))
+        .map<Name>((e) => Name.fromJson(e))
         .toList();
     return result;
   } else {
-    throw Exception('Failed to load available dentists');
+    throw Exception('Failed to load callers');
   }
 }
 
@@ -84,7 +84,7 @@ class _CallScreenState extends State<CallScreen> {
 
   RtcEngine? agoraEngine;
 
-  late Future<List<DentistName>> futureAvailableDentist;
+  late Future<List<Name>> futureAvailableCallers;
 
   final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
@@ -134,7 +134,7 @@ class _CallScreenState extends State<CallScreen> {
   void initState() {
     super.initState();
     setupVoiceSDKEngine();
-    futureAvailableDentist = fetchAvailableDentist();
+    futureAvailableCallers = fetchAvailableCallers();
   }
 
   void leave() {
@@ -170,8 +170,8 @@ class _CallScreenState extends State<CallScreen> {
         elevation: 0,
         backgroundColor: const Color(0xffC9E5FF),
       ),
-      body: FutureBuilder<List<DentistName>>(
-          future: futureAvailableDentist,
+      body: FutureBuilder<List<Name>>(
+          future: futureAvailableCallers,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return Column(
@@ -502,14 +502,7 @@ class _CallScreenState extends State<CallScreen> {
                     icon: speakerIcon),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 23.0),
-              child: Text(
-                'DentalDost',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-            ),
+            
             Padding(
               padding: const EdgeInsets.only(
                   left: 15.0, right: 25.0, top: 15.0, bottom: 15.0),
@@ -567,9 +560,9 @@ Widget _status() {
   String statusText;
 
   if (!_isJoined) {
-    statusText = 'Connecting to DentalDost';
+    statusText = 'Connecting';
   } else if (_remoteUid == null) {
-    statusText = 'Waiting for a dentist to join...';
+    statusText = 'Waiting for a user to join...';
   } else {
     statusText = 'Connected!!';
   }
